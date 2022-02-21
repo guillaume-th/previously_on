@@ -35,7 +35,8 @@ export default function AuthConfirm() {
         );
     }
     else {
-        return <CircularProgress />
+        return <  CircularProgress
+            sx={{ fontSize: "3.5rem" }} />
     }
 
 }
