@@ -1,0 +1,15 @@
+.series-wrapper{
+    display : grid; 
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.series-card{
+    width : 300px; 
+    min-height : 400px; 
+    border-radius: .5rem;
+}
+
+.series-card img {
+    width : 100%;
+}
+
