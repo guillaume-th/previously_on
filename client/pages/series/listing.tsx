@@ -13,9 +13,8 @@ export default function SeriesListing() {
         fetch(`https://api.betaseries.com/shows/list?order=popularity&client_id=${API_KEY}`)
             .then(res => res.json())
             .then(res => {
-                console.log(res);
                 if (res.shows) {
-                    setData(res.shows)
+                    setData(res.shows);
                 }
             })
             .catch(err => console.log(err));
@@ -26,13 +25,14 @@ export default function SeriesListing() {
             <Header />
             {data.length > 0
                 ? <div className="series-wrapper">
-                    {data.length > 0 &&
-                        data.map(v => (
-                            <div className="series-card" style={{backgroundImage : `${v.images.poster}` }}>
-                                <img className="series-poster" src={v.images.poster} alt="" />
+                    {
+                      data.map(v => (
+                            <div className="series-card" key={v.id} style={{ backgroundImage: `url(${v.images.poster})` }}>
+                                {/* <im g className="series-poster" src={v.images.poster} alt="" /> */}
+                                <p>v.title</p>
                             </div>
-                        ))}
-
+                        ))
+                    }
                 </div>
                 : <CircularProgress />}
         </div>
