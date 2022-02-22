@@ -1,24 +1,107 @@
-.series-wrapper{
-    display : grid; 
-    grid-template-columns: repeat(4, 1fr);
-    gap : 1rem;
+:root {
+    /* Color */
+    --clr-primary-med: #0074B7;
+    --clr-primary-dark: #003B73;
+    --clr-primary-light: #BFD7ED;
+    /* Font Sizes */
+    --fs-med: 1.25rem;
+    --fs-big: 1.75rem;
+    /* MISC */
+    --header-h: 100px;
 }
 
-.series-card{
-    width : 300px; 
-    min-height : 450px; 
+p {
+    margin: 0;
+}
+
+body {
+    background-color: black;
+}
+
+header {
+    height: var(--header-h);
+    color: var(--clr-primary-light);
+}
+
+.series-wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.series-card {
+    width: 300px;
+    min-height: 450px;
     border-radius: .5rem;
-    background-repeat : no-repeat; 
-    background-size : cover;
+    background-repeat: no-repeat;
+    background-size: cover;
     transition: all .25s ease-out;
     cursor: pointer;
 }
 
-.series-card:hover{
+.series-card:hover {
     transform: scale(1.05);
 }
 
 .series-card img {
-    width : 100%;
+    width: 100%;
 }
 
+.series-card-data {
+    background-color: rgba(245, 245, 245, 0.9);
+    height: 100%;
+    width: 100%;
+    /* visibility: hidden; */
+    /* display: none; */
+    transition: all .75s ease;
+    opacity: 0%;
+    color: black;
+    font-size: var(--fs-big);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: .5rem;
+    border: 3px solid var(--clr-primary-light);
+}
+
+.card-title {
+    width: 100%;
+    text-align: center;
+}
+
+.fadeIn {
+    transition: all .75s ease;
+    opacity: 100%;
+}
+
+.display-img {
+    height: calc(100vh - var(--header-h));
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(10px);
+    color: white;
+    position: relative;
+}
+
+.display-wrapper {
+    position: absolute;
+    color: white;
+    top: calc(var(--header-h) + 5rem);
+    left: 3rem;
+}
+
+.center {
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+.block {
+    display: block;
+}
