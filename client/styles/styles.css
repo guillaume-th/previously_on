@@ -1,12 +1,21 @@
 .series-wrapper{
     display : grid; 
     grid-template-columns: repeat(4, 1fr);
+    gap : 1rem;
 }
 
 .series-card{
     width : 300px; 
-    min-height : 400px; 
+    min-height : 450px; 
     border-radius: .5rem;
+    background-repeat : no-repeat; 
+    background-size : cover;
+    transition: all .25s ease-out;
+    cursor: pointer;
+}
+
+.series-card:hover{
+    transform: scale(1.05);
 }
 
 .series-card img {
