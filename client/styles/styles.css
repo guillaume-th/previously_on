@@ -4,8 +4,8 @@
     --clr-primary-dark: #003B73;
     --clr-primary-light: #BFD7ED;
     /* Font Sizes */
-    --fs-med: 1.25rem;
-    --fs-big: 1.75rem;
+    --fs-med: 1.5rem;
+    --fs-big: 2rem;
     /* MISC */
     --header-h: 100px;
 }
@@ -90,6 +90,8 @@ header {
     color: white;
     top: calc(var(--header-h) + 5rem);
     left: 3rem;
+    background-color: rgba(0, 0, 0, 0.753);
+    padding :1.5rem
 }
 
 .center {
@@ -104,4 +106,38 @@ header {
 
 .block {
     display: block;
+}
+
+.lgt-blue {
+    color: var(--clr-primary-light);
+}
+
+.display-top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.display-top img {
+    height: 500px;
+}
+
+.mid-title {
+    font-size: var(--fs-big);
+    margin: 2rem 0;
+    /* color : var(--clr-primary-med); */
+}
+
+.vod-logo {
+    height: 125px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.vod-logo:hover {
+    transform: scale(1.05);
+}
+
+.vod-container {
+    display: flex;
+    gap: 2rem;
 }

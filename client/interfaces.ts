@@ -8,9 +8,21 @@ export interface showData {
     notes: {
         mean : number
     }, 
-    genres : string[], 
+    genres : object, 
     seasons : number, 
     episodes : number, 
     description : string, 
+    platforms : {
+        svods : svod[]
+    },
+}
 
+interface svod {
+    logo : string, 
+    link_url : string,
+}
+
+export interface Episode{
+    title : string, 
+    resource_url : string,  
 }
