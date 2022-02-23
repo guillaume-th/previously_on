@@ -25,4 +25,6 @@ interface svod {
 export interface Episode{
     title : string, 
     resource_url : string,  
+    season : number,
+    id : number,
 }

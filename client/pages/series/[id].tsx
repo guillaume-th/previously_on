@@ -4,17 +4,18 @@ import { useEffect, useState } from "react";
 import Header from "../Header";
 import { showData, Episode } from "../../interfaces";
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import { getQueryParameter } from "../../utils";
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
 
 
 export default function SeriesListing() {
     const [data, setData] = useState<showData>();
-    const [episodes, setEpisodes] = useState<Episode[]>([])
+    const [episodes, setEpisodes] = useState<object[][]>([])
     const router = useRouter();
 
     useEffect(() => {
-        const id = getId();
+        const id = getQueryParameter();
         fetch(`https://api.betaseries.com/shows/display?id=${id}&client_id=${API_KEY}`)
             .then(res => res.json())
             .then(res => {
@@ -29,26 +30,37 @@ export default function SeriesListing() {
         getEpisodes(id);
     }, []);
 
-    const getEpisodes = (id:string) => {
+    const getEpisodes = (id: string) => {
         fetch(`https://api.betaseries.com/shows/episodes?id=${id}&client_id=${API_KEY}`)
             .then(res => res.json())
             .then(res => {
-                let data = [];
+
                 if (res.episodes) {
-                    setEpisodes(res.episodes);
+                    const data = formatEpisodes(res.episodes)
+                    setEpisodes(data);
                 }
             })
             .catch(err => console.log(err));
     }
 
-    const getId = () => {
-        let { id } = router.query;
-        if (id === undefined) {
-            const path = window.location.pathname;
-            const slashIndex: number | undefined = path.lastIndexOf("/");
-            id = path.slice(slashIndex + 1, path.length);
+   
+
+    function formatEpisodes(episodes: Episode[]): Episode[][] {
+        const data = [];
+        let tmp = [];
+        for (let i = 0; i < episodes.length; i++) {
+            if (i > 0) {
+                if (episodes[i].season !== episodes[i - 1].season) {
+                    data.push(tmp);
+                    tmp = [];
+                }
+            }
+            tmp.push(episodes[i]);
         }
-        return id as string;
+        data.push(tmp); 
+        console.log(data); 
+        return data; 
+
     }
 
     return (
