@@ -1,5 +1,5 @@
-const API_KEY: string = process.env.NEXT_PUBLIC_API_KEY;
-const redirect_uri: string = process.env.NEXT_PUBLIC_CALLBACK_URI;
+const API_KEY: string| undefined  = process.env.NEXT_PUBLIC_API_KEY;
+const redirect_uri: string | undefined = process.env.NEXT_PUBLIC_CALLBACK_URI;
 
 export default function Connexion() {
 

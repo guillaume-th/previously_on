@@ -1,18 +1,21 @@
 import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent } from "react";
 import Header from "../Header";
 import { showData, Episode } from "../../interfaces";
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { getQueryParameter } from "../../utils";
+import Dropper from "./Dropper";
+import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
 
 
 export default function SeriesListing() {
     const [data, setData] = useState<showData>();
-    const [episodes, setEpisodes] = useState<object[][]>([])
+    const [episodes, setEpisodes] = useState<Episode[][]>([])
     const router = useRouter();
+    const [openDroppers, setOpenDroppers] = useState<number[]>([]);
 
     useEffect(() => {
         const id = getQueryParameter(window.location.pathname);
@@ -36,14 +39,13 @@ export default function SeriesListing() {
             .then(res => {
 
                 if (res.episodes) {
-                    const data = formatEpisodes(res.episodes)
-                    setEpisodes(data);
+                    getThumbnails(res.episodes)
                 }
             })
             .catch(err => console.log(err));
     }
 
-   
+
 
     function formatEpisodes(episodes: Episode[]): Episode[][] {
         const data = [];
@@ -57,10 +59,37 @@ export default function SeriesListing() {
             }
             tmp.push(episodes[i]);
         }
-        data.push(tmp); 
-        console.log(data); 
-        return data; 
+        data.push(tmp);
+        return data;
+    }
 
+
+    const toggleDropper = (id: number) => {
+        if (openDroppers.includes(id)) {
+            const i = openDroppers.indexOf(id);
+            const tmpData = [...openDroppers];
+            tmpData.splice(i, 1);
+            setOpenDroppers(tmpData);
+        }
+        else {
+            setOpenDroppers([id, ...openDroppers]);
+        }
+    }
+
+    const getThumbnails = (episodes: Episode[]) => {
+        const fetches = []
+        for (let i = 0; i < episodes.length; i++) {
+            fetches.push(fetch(`https://api.betaseries.com/pictures/episodes?client_id=${API_KEY}&id=${episodes[i].id}`)
+                .then(res => {
+                    episodes[i].image = res.url;
+                })
+                .catch(err => console.log(err)));
+        }
+
+        Promise.all(fetches).then(() => {
+            const data = formatEpisodes(episodes);
+            setEpisodes(data);
+        });
     }
 
     return (
@@ -101,14 +130,23 @@ export default function SeriesListing() {
                                         )}
                                     </div>
                                 </div>
-                                <div className="episode-list">
+                                <div className="episode-list-container">
                                     <p className="mid-title">Episodes </p>
                                     {episodes.length > 0
-                                        ? episodes.map(v =>
-                                            <div>
-                                                <img src={v.resource_url} />
-                                                <p>{v.title}</p>
+                                        ? episodes.map((v: Episode[], i: number) =>
+                                            <div >
+                                                <div className="dropper-title">
+                                                    <div className="horizontal sp-b" onClick={() => toggleDropper(i)}>
+                                                        <p className="mid-title lgt-blue">Saison {i + 1}</p>
+                                                        <ArrowDropDownCircleIcon sx={{ color: "#BFD7ED", fontSize: "2rem", cursor: "pointer" }} />
+                                                    </div>
+                                                    <hr />
+                                                </div>
+                                                {openDroppers.includes(i) &&
+                                                    <Dropper data={v} id={`dropper-${i}`} />
+                                                }
                                             </div>
+
                                         )
                                         : <CircularProgress />
                                     }
