@@ -1,30 +1,33 @@
 export interface showData {
-    id : number, 
+    id: number,
     images: {
-        poster: string, 
-        show : string,
+        poster: string,
+        show: string,
     },
-    title : string,
+    title: string,
     notes: {
-        mean : number
-    }, 
-    genres : object, 
-    seasons : number, 
-    episodes : number, 
-    description : string, 
-    platforms : {
-        svods : svod[]
+        mean: number
+    },
+    genres: object,
+    seasons: number,
+    episodes: number,
+    description: string,
+    platforms: {
+        svods: svod[]
     },
 }
 
 interface svod {
-    logo : string, 
-    link_url : string,
+    logo: string,
+    link_url: string,
 }
 
-export interface Episode{
-    title : string, 
-    resource_url : string,  
-    season : number,
-    id : number,
+export interface Episode {
+    title: string,
+    season: number,
+    id: number,
+}
+
+export interface SliderProps {
+    data: Episode[]
 }

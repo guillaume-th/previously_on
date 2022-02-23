@@ -5,13 +5,14 @@ import Header from "../Header";
 import { showData, Episode } from "../../interfaces";
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { getQueryParameter } from "../../utils";
+import Slider from "./Slider"; 
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
 
 
 export default function SeriesListing() {
     const [data, setData] = useState<showData>();
-    const [episodes, setEpisodes] = useState<object[][]>([])
+    const [episodes, setEpisodes] = useState<Episode[][]>([])
     const router = useRouter();
 
     useEffect(() => {
@@ -43,7 +44,7 @@ export default function SeriesListing() {
             .catch(err => console.log(err));
     }
 
-   
+
 
     function formatEpisodes(episodes: Episode[]): Episode[][] {
         const data = [];
@@ -57,11 +58,10 @@ export default function SeriesListing() {
             }
             tmp.push(episodes[i]);
         }
-        data.push(tmp); 
-        console.log(data); 
-        return data; 
-
+        data.push(tmp);
+        return data;
     }
+
 
     return (
         <div>
@@ -101,14 +101,19 @@ export default function SeriesListing() {
                                         )}
                                     </div>
                                 </div>
-                                <div className="episode-list">
+                                <div className="episode-list-container">
                                     <p className="mid-title">Episodes </p>
                                     {episodes.length > 0
-                                        ? episodes.map(v =>
+                                        ? episodes.map((v: Episode[], i: number) =>
                                             <div>
-                                                <img src={v.resource_url} />
-                                                <p>{v.title}</p>
+                                                <p className="mid-title lgt-blue">Saison {i + 1}</p>
+                                                {/* <div className="episode-list"> */}
+                                                <Slider data={v}/>
+                                             
+                                                {/* </div> */}
+
                                             </div>
+
                                         )
                                         : <CircularProgress />
                                     }

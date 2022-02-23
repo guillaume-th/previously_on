@@ -91,13 +91,10 @@ header {
     top: calc(var(--header-h) + 5rem);
     left: 3rem;
     background-color: rgba(0, 0, 0, 0.753);
-    padding :1.5rem
+    padding :1.5rem;
+    margin-right : 3rem; 
 }
 
-.center {
-    /* justify-content: center; */
-    /* align-items: center; */
-}
 
 .horizontal {
     display: flex;
@@ -140,4 +137,21 @@ header {
 .vod-container {
     display: flex;
     gap: 2rem;
+}
+
+.episode-list{
+    display : flex; 
+    width : 100vw;
+    max-width: 100vw; 
+    overflow-x: scroll;
+}
+
+.episode-card{
+    cursor: pointer;
+    width : 175px; 
+    height: 100px;
+}
+
+.episode-card:hover{
+    background-color: #0074B7;
 }
