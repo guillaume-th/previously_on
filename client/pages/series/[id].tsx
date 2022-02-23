@@ -15,7 +15,7 @@ export default function SeriesListing() {
     const router = useRouter();
 
     useEffect(() => {
-        const id = getQueryParameter();
+        const id = getQueryParameter(window.location.pathname);
         fetch(`https://api.betaseries.com/shows/display?id=${id}&client_id=${API_KEY}`)
             .then(res => res.json())
             .then(res => {
