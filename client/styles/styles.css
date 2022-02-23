@@ -156,8 +156,8 @@ header {
 }
 
 .episode-card {
-    width: 200px;
-    height: 120px;
+    width: 230px;
+    min-height: 120px;
     transition : all .25s ease; 
     padding : .5rem; 
     border : 1px solid transparent; 
@@ -166,6 +166,10 @@ header {
 
 .episode-card:hover {
     border : 1px solid var(--clr-primary-med);
+}
+
+.episode-card img{
+    width : 100%;
 }
 
 .dropper {
@@ -191,4 +195,8 @@ header {
 .txt-sm{
     font-size: var(--fs-sm);
     color :#0074B7;
+}
+
+.episode-seen{
+    color : grey; 
 }

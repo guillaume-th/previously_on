@@ -27,6 +27,10 @@ export interface Episode {
     season: number,
     id: number,
     code : string, 
+    user : {
+        seen : boolean, 
+    }
+    image : string, 
 }
 
 export interface SliderProps {

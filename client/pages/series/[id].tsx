@@ -15,7 +15,7 @@ export default function SeriesListing() {
     const [data, setData] = useState<showData>();
     const [episodes, setEpisodes] = useState<Episode[][]>([])
     const router = useRouter();
-    const [openDroppers, setOpenDroppers] = useState<number[]>([]); 
+    const [openDroppers, setOpenDroppers] = useState<number[]>([]);
 
     useEffect(() => {
         const id = getQueryParameter(window.location.pathname);
@@ -39,9 +39,7 @@ export default function SeriesListing() {
             .then(res => {
 
                 if (res.episodes) {
-                    const data = formatEpisodes(res.episodes)
-                    setEpisodes(data);
-                    console.log(data);
+                    getThumbnails(res.episodes)
                 }
             })
             .catch(err => console.log(err));
@@ -66,16 +64,32 @@ export default function SeriesListing() {
     }
 
 
-    const toggleDropper = (id:number) => {
-        if(openDroppers.includes(id)){
+    const toggleDropper = (id: number) => {
+        if (openDroppers.includes(id)) {
             const i = openDroppers.indexOf(id);
-            const tmpData = [...openDroppers]; 
+            const tmpData = [...openDroppers];
             tmpData.splice(i, 1);
-            setOpenDroppers(tmpData); 
+            setOpenDroppers(tmpData);
         }
-        else{
+        else {
             setOpenDroppers([id, ...openDroppers]);
         }
+    }
+
+    const getThumbnails = (episodes: Episode[]) => {
+        const fetches = []
+        for (let i = 0; i < episodes.length; i++) {
+            fetches.push(fetch(`https://api.betaseries.com/pictures/episodes?client_id=${API_KEY}&id=${episodes[i].id}`)
+                .then(res => {
+                    episodes[i].image = res.url;
+                })
+                .catch(err => console.log(err)));
+        }
+
+        Promise.all(fetches).then(() => {
+            const data = formatEpisodes(episodes);
+            setEpisodes(data);
+        });
     }
 
     return (
@@ -122,9 +136,9 @@ export default function SeriesListing() {
                                         ? episodes.map((v: Episode[], i: number) =>
                                             <div >
                                                 <div className="dropper-title">
-                                                    <div className="horizontal sp-b" onClick={()=>toggleDropper(i)}>
+                                                    <div className="horizontal sp-b" onClick={() => toggleDropper(i)}>
                                                         <p className="mid-title lgt-blue">Saison {i + 1}</p>
-                                                        <ArrowDropDownCircleIcon sx={{ color: "#BFD7ED", fontSize: "2rem", cursor :"pointer" }} />
+                                                        <ArrowDropDownCircleIcon sx={{ color: "#BFD7ED", fontSize: "2rem", cursor: "pointer" }} />
                                                     </div>
                                                     <hr />
                                                 </div>
