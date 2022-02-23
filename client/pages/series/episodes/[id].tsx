@@ -12,14 +12,15 @@ export default function SeriesListing() {
     const [data, setData] = useState<Episode>();
     const [image, setImage] = useState(null);
     const [background, setBackGround] = useState(null);
+    const [token, setToken] = useState(null);
     const router = useRouter();
-
+    
     useEffect(() => {
         const id = getId();
         fetch(`https://api.betaseries.com/episodes/display?id=${id}&client_id=${API_KEY}`)
             .then(res => res.json())
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 if (res.episode) {
                     setData(res.episode)
                     getBackground(id,res.episode.season);
@@ -33,7 +34,7 @@ export default function SeriesListing() {
     const getImage = (id: string) => {
     fetch(`https://api.betaseries.com/pictures/episodes?id=${id}&client_id=${API_KEY}`)
     .then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.url) {
             setImage(res.url)
         }
@@ -43,14 +44,35 @@ export default function SeriesListing() {
     const getBackground = (id: string,id_season: string) => {
         fetch(`https://api.betaseries.com/pictures/seasons?show_id=${id}&season=${id_season}&client_id=${API_KEY}`)
         .then(res => {
-            console.log(res);
+            // console.log(res);
             if (res.url) {
                 setBackGround(res.url)
             }
         })
         .catch(err => console.log(err));
         }
+        const PostVu = (id: string) => {
+            const token = localStorage.getItem("token")
+            console.log(token)
+            fetch(`https://api.betaseries.com/episodes/watched?id=${id}&client_id=${API_KEY}&access_token=${token}`,{
+                method: "POST",
+            })
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => console.log(err));
+            }
 
+            const PostVuAll = (id: string) => {
+                const token = localStorage.getItem("token")
+                fetch(`https://api.betaseries.com/episodes/watched?id=${id}&bulk=false&client_id=${API_KEY}&access_token=${token}`,{
+                    method: "POST",
+                })
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => console.log(err));
+                }
 
     const getId = () => {
         let { id } = router.query;
@@ -74,15 +96,15 @@ export default function SeriesListing() {
                                 <h1>{data.title}</h1>
                                 <div className=" center horizontal">
                                     <StarOutlineIcon className="block" style={{marginRight : ".5rem"}}/>
-
                                     <span className="block">{data.note.mean.toFixed(1)}</span>
-                                    
                                 </div>
                                 <img src={image} alt="" />
                                 <p>sortie : {data.date}</p>
                                 <p>season n°{data.season}</p>
                                 <p>episodes n°{data.episode}</p>
                                 <p> Resumé : {data.description}</p>
+                                <button onClick={PostVu}>j ai vu cette episode</button>
+                                <button onClick={PostVuAll}>j ai vu cette episode et ce d'avant</button>
                             </div>
                         }
 

@@ -22,7 +22,7 @@ export default function AuthConfirm() {
             .then(res => {
                 console.log(res.access_token)
                 if (res.access_token) {
-                    localStorage.setItem("token", res.token);
+                    localStorage.setItem("token", res.access_token);
                     setToken(res.access_token);
                 }
             })
