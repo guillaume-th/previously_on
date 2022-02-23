@@ -1,11 +1,12 @@
 import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent } from "react";
 import Header from "../Header";
 import { showData, Episode } from "../../interfaces";
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { getQueryParameter } from "../../utils";
-import Slider from "./Slider"; 
+import Dropper from "./Dropper";
+import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
 
@@ -14,6 +15,7 @@ export default function SeriesListing() {
     const [data, setData] = useState<showData>();
     const [episodes, setEpisodes] = useState<Episode[][]>([])
     const router = useRouter();
+    const [openDroppers, setOpenDroppers] = useState<number[]>([]); 
 
     useEffect(() => {
         const id = getQueryParameter(window.location.pathname);
@@ -39,6 +41,7 @@ export default function SeriesListing() {
                 if (res.episodes) {
                     const data = formatEpisodes(res.episodes)
                     setEpisodes(data);
+                    console.log(data);
                 }
             })
             .catch(err => console.log(err));
@@ -62,6 +65,18 @@ export default function SeriesListing() {
         return data;
     }
 
+
+    const toggleDropper = (id:number) => {
+        if(openDroppers.includes(id)){
+            const i = openDroppers.indexOf(id);
+            const tmpData = [...openDroppers]; 
+            tmpData.splice(i, 1);
+            setOpenDroppers(tmpData); 
+        }
+        else{
+            setOpenDroppers([id, ...openDroppers]);
+        }
+    }
 
     return (
         <div>
@@ -105,13 +120,17 @@ export default function SeriesListing() {
                                     <p className="mid-title">Episodes </p>
                                     {episodes.length > 0
                                         ? episodes.map((v: Episode[], i: number) =>
-                                            <div>
-                                                <p className="mid-title lgt-blue">Saison {i + 1}</p>
-                                                {/* <div className="episode-list"> */}
-                                                <Slider data={v}/>
-                                             
-                                                {/* </div> */}
-
+                                            <div >
+                                                <div className="dropper-title">
+                                                    <div className="horizontal sp-b" onClick={()=>toggleDropper(i)}>
+                                                        <p className="mid-title lgt-blue">Saison {i + 1}</p>
+                                                        <ArrowDropDownCircleIcon sx={{ color: "#BFD7ED", fontSize: "2rem", cursor :"pointer" }} />
+                                                    </div>
+                                                    <hr />
+                                                </div>
+                                                {openDroppers.includes(i) &&
+                                                    <Dropper data={v} id={`dropper-${i}`} />
+                                                }
                                             </div>
 
                                         )

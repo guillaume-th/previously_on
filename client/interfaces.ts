@@ -26,8 +26,10 @@ export interface Episode {
     title: string,
     season: number,
     id: number,
+    code : string, 
 }
 
 export interface SliderProps {
-    data: Episode[]
+    data: Episode[], 
+    id:string
 }
