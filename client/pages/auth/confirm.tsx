@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
+import {useAppDispatch} from "../../hooks";
+import { updateToken } from "../../slices/userSlice"; 
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 const API_SECRET: string | undefined = process.env.NEXT_PUBLIC_API_SECRET;
 const redirect_uri: string | undefined = process.env.NEXT_PUBLIC_CALLBACK_URI;
 
+
 export default function AuthConfirm() {
-    const [token, setToken] = useState(null);
+    const dispatch = useAppDispatch(); 
 
     useEffect(() => {
         getAccessToken();
@@ -23,20 +26,12 @@ export default function AuthConfirm() {
                 console.log(res.access_token)
                 if (res.access_token) {
                     localStorage.setItem("token", res.access_token);
-                    setToken(res.access_token);
+                    dispatch(updateToken(res.access_token));
+                    window.location.replace("http://localhost:3000/series/listing");
                 }
             })
             .catch(err => console.log(err));
     }
 
-    if (token) {
-        return (
-            <p>Successfully connected</p>
-        );
-    }
-    else {
-        return <  CircularProgress
-            sx={{ fontSize: "3.5rem" }} />
-    }
-
+    return null; 
 }

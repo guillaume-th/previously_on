@@ -37,3 +37,16 @@ export interface SliderProps {
     data: Episode[], 
     id:string
 }
+
+export interface User{
+    login : string,
+    subscription : Date, 
+    stats : {
+        friends : number,
+        shows : number, 
+        episodes_to_watch : number, 
+        xp : 0, 
+    }
+    avatar: string|null, 
+    id : number, 
+}
