@@ -178,18 +178,10 @@ header {
     display : flex; 
     flex-wrap: wrap;
     gap : 1rem; 
-    /* overflow-y: hidden; */
-    /* max-height: 0px; */
-    /* transform: scaleY(0); */
-    /* transform: translateX(-200px)    ; */
 }
 
 .dropper-visible {
     opacity: 100%;
-    /* max-height : 100%; */
-    /* transform : scaleY(100%); */
-    /* overflow-y: auto; */
-    /* transform: translateX(0px); */
 }
 
 .txt-sm{
@@ -198,5 +190,9 @@ header {
 }
 
 .episode-seen{
-    color : grey; 
+    filter : grayscale(0.9)
 }
+/* 
+.episode-seen:hover{
+    filter: none;
+} */

@@ -7,6 +7,7 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { getQueryParameter } from "../../utils";
 import Dropper from "./Dropper";
 import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
+import { useAppSelector } from "../../hooks";
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
 
@@ -16,10 +17,11 @@ export default function SeriesListing() {
     const [episodes, setEpisodes] = useState<Episode[][]>([])
     const router = useRouter();
     const [openDroppers, setOpenDroppers] = useState<number[]>([]);
+    const token = useAppSelector(state => state.user.accessToken)
 
     useEffect(() => {
         const id = getQueryParameter(window.location.pathname);
-        fetch(`https://api.betaseries.com/shows/display?id=${id}&client_id=${API_KEY}`)
+        fetch(`https://api.betaseries.com/shows/display?id=${id}&client_id=${API_KEY}&token=${token}`)
             .then(res => res.json())
             .then(res => {
                 console.log(res);
@@ -34,7 +36,7 @@ export default function SeriesListing() {
     }, []);
 
     const getEpisodes = (id: string) => {
-        fetch(`https://api.betaseries.com/shows/episodes?id=${id}&client_id=${API_KEY}`)
+        fetch(`https://api.betaseries.com/shows/episodes?id=${id}&client_id=${API_KEY}&token=${token}`)
             .then(res => res.json())
             .then(res => {
 
@@ -88,6 +90,7 @@ export default function SeriesListing() {
 
         Promise.all(fetches).then(() => {
             const data = formatEpisodes(episodes);
+            console.log(data); 
             setEpisodes(data);
         });
     }
