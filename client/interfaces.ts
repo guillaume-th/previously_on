@@ -15,6 +15,19 @@ export interface showData {
     platforms: {
         svods: svod[]
     },
+    user : {
+        status : number, 
+        remaining: number,
+        favorited : boolean, 
+        archived : boolean, 
+        next : {
+            id : number, 
+            code :string, 
+            title : string,
+            image : string,
+        }
+    }
+   
 }
 
 interface svod {
@@ -31,6 +44,12 @@ export interface Episode {
         seen : boolean, 
     }
     image : string, 
+    date: string, 
+    episode : number, 
+    description : string,
+    note : {
+        mean : number
+    } 
 }
 
 export interface SliderProps {

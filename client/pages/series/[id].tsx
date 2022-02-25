@@ -1,6 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
-import { useEffect, useState, MouseEvent } from "react";
+import { useEffect, useState } from "react";
 import Header from "../Header";
 import { showData, Episode } from "../../interfaces";
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
@@ -10,12 +10,9 @@ import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import { useAppSelector } from "../../hooks";
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
-
-
 export default function SeriesListing() {
     const [data, setData] = useState<showData>();
     const [episodes, setEpisodes] = useState<Episode[][]>([])
-    const router = useRouter();
     const [openDroppers, setOpenDroppers] = useState<number[]>([]);
     const token = useAppSelector(state => state.user.accessToken)
 
@@ -90,7 +87,7 @@ export default function SeriesListing() {
 
         Promise.all(fetches).then(() => {
             const data = formatEpisodes(episodes);
-            console.log(data); 
+            console.log(data);
             setEpisodes(data);
         });
     }
@@ -111,14 +108,12 @@ export default function SeriesListing() {
                                             <StarOutlineIcon className="block" style={{ marginRight: ".5rem" }} />
                                             <span className="block">{data.notes.mean.toFixed(2)}</span>
                                         </div>
-                                        {/* <img className="series-poster" src={data.images.poster} alt="" /> */}
                                         {Object.values(data.genres).map(v =>
                                             <span className="lgt-blue">{v} </span>
                                         )}
                                         <p>{`${data.seasons} saison${data.seasons > 1 ? "s" : ""}`} </p>
                                         <p style={{ marginBottom: "2rem" }}>{`${data.episodes} épisode${data.episodes > 1 ? "s" : ""}`} </p>
                                     </div>
-                                    {/* <img src={data.images.poster} alt="" /> */}
                                 </div>
                                 <p>{data.description}</p>
                                 <div>
@@ -134,6 +129,17 @@ export default function SeriesListing() {
                                     </div>
                                 </div>
                                 <div className="episode-list-container">
+                                    {data.user &&
+                                        <div>
+                                            <p>Il vous reste <strong>{data.user.remaining}</strong> épisode(s) à voir.</p>
+                                            <p className="title-mid">Prochain épisode : </p>
+                                            <div className="episode-card">
+                                                <p>{data.user.next.title}</p>
+                                                <p className="txt-sm">{data.user.next.code}</p>
+                                                {/* <img src={data.user.next.image} alt="" /> */}
+                                            </div>
+                                        </div>
+                                    }
                                     <p className="mid-title">Episodes </p>
                                     {episodes.length > 0
                                         ? episodes.map((v: Episode[], i: number) =>
