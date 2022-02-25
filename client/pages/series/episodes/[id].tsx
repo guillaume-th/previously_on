@@ -32,7 +32,6 @@ export default function SeriesListing() {
     const [image, setImage] = useState("");
     const [background, setBackGround] = useState<string>("");
     const [episodeId, setEpisodeId] = useState<string>("");
-    // const [seen, setSeen] = useState(false);
     const token = useAppSelector(state => state.user.accessToken)
 
     useEffect(() => {
@@ -44,13 +43,11 @@ export default function SeriesListing() {
             .then(res => {
                 console.log(res);
                 if (res.episode) {
-
                     setData(res.episode as Episode)
                     getBackground(res.episode.show.id);
                 }
             })
             .catch(err => console.log(err));
-        console.log(id)
         getImage(id);
 
     }, []);

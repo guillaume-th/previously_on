@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function Dropper({ data, id }: SliderProps) {
 
     useEffect(() => {
-        document?.getElementById(id).classList.add("dropper-visible");
+        document.getElementById(id)?.classList.add("dropper-visible");
     }, []);
         
 
