@@ -32,19 +32,21 @@ export default function SeriesListing() {
     const [image, setImage] = useState("");
     const [background, setBackGround] = useState<string>("");
     const [episodeId, setEpisodeId] = useState<string>("");
+    const [comments, setComments] = useState(null);
     const token = useAppSelector(state => state.user.accessToken)
 
     useEffect(() => {
         const id = getQueryParameter(window.location.pathname);
-        console.log(token);
+        console.log(id);
         setEpisodeId(id)
         fetch(`https://api.betaseries.com/episodes/display?id=${id}&client_id=${API_KEY}&access_token=${token}`)
             .then(res => res.json())
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 if (res.episode) {
                     setData(res.episode as Episode)
                     getBackground(res.episode.show.id);
+                    getComment(id);
                 }
             })
             .catch(err => console.log(err));
@@ -91,7 +93,7 @@ export default function SeriesListing() {
                     newData.user.seen = true;
                     setData(newData);
                 }
-                console.log(res);
+                // console.log(res);
             })
             .catch(err => console.log(err));
     }
@@ -109,6 +111,32 @@ export default function SeriesListing() {
             .catch(err => console.log(err));
     }
 
+    const getComment = (id: string) => {
+        const token = localStorage.getItem("token")
+        fetch(`https://api.betaseries.com/comments/comments?id=${id}&type=episode&client_id=${API_KEY}&access_token=${token}&nbpp=10`)
+        .then(res => res.json())
+        .then(res => {
+            console.log(res);
+            setComments(res.comments);
+        })
+        .catch(err => console.log(err));
+        }
+    const sendComment = (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem("token")
+        console.log(e.target[0].value)
+        if(e.target[0].value!==""&& e.target[0].value!==null){
+        fetch(`https://api.betaseries.com/comments/comment?client_id=${API_KEY}&access_token=${token}&type=episode&id=${episodeId}&text=${e.target[0].value}`)
+        .then(res => res.json())
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => console.log(err));
+        }else{
+            console.log("message vide")
+        }
+
+    }
     const Buttons = () => {
         return (
             data?.user.seen
@@ -141,6 +169,22 @@ export default function SeriesListing() {
                             <p>episodes n°{data.episode}</p>
                             <p> Resumé : {data.description}</p>
                             <Buttons />
+                            {comments?.map((comment)=>
+                            <div>
+                            <img src={comment.avatar} alt="" />
+                            <p>{comment.login}</p>
+                            <div className=" center horizontal">
+                                <StarOutlineIcon className="block" style={{ marginRight: ".5rem" }} />
+                                <span className="block">{comment.user_note}</span>
+                            </div>
+                            <p>{comment.date}</p>
+                            <p>{comment.text}</p>
+                            </div>
+                            )}
+                            <form onSubmit={sendComment}>
+                            <textarea  name='commentaire'></textarea>
+                            <input type="submit" value="send"/>
+                            </form>
                         </div>
                     </div>
                 </div>
