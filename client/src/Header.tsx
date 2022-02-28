@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Connexion from "./auth/connexion";
+import Connexion from "../pages/auth/connexion";
 import { useAppSelector } from '../hooks';
 
 export default function Header() {
@@ -9,12 +9,13 @@ export default function Header() {
     return (
         <header>
             <div>Previously On </div>
-            {userData
-                ? <p>{userData.login}</p>
-                : <Connexion/>
-            }
+           
             <nav>
                 <Link href="/series/listing">Series</Link>
+                {userData
+                ? <Link href="/profile">{userData.login}</Link>
+                : <Connexion/>
+            }
             </nav>
         </header>
     );

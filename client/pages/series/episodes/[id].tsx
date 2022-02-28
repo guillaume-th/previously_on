@@ -1,6 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
-import Header from "../../Header";
+import Header from "../../../src/Header";
 import { Episode } from "../../../interfaces";
 import { getQueryParameter } from "../../../utils";
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
