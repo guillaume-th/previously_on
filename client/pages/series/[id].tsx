@@ -123,19 +123,24 @@ export default function SeriesListing() {
                                 </div>
                                 <p>{data.description}</p>
                                 <div>
+                                {data.platforms &&
                                     <p className="mid-title">Où regarder : </p>
+                                }
                                     <div className="vod-container">
-                                        {data.platforms.svods.map(v =>
-                                            <div>
+                                    {data.platforms &&
+                                        data.platforms.svods.map((v, i) =>
+                                            <div key={`svod${i}`}>
                                                 <a href={v.link_url} target="_blank">
                                                     <img src={v.logo} className="vod-logo" />
                                                 </a>
                                             </div>
-                                        )}
+                                        )
+                                        }
                                     </div>
                                 </div>
                                 <div className="episode-list-container">
                                     {data.user &&
+                                        data.user.remaining!==0 &&
                                         <div>
                                             <p>Il vous reste <strong>{data.user.remaining}</strong> épisode(s) à voir.</p>
                                             <p className="title-mid">Prochain épisode : </p>
