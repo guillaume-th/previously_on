@@ -201,3 +201,11 @@ header {
 .button{
     cursor: pointer;
 }
+
+.validated{
+    color : var(--clr-primary-light);
+}
+
+.unvalidated{
+    color : var(--clr-primary-med)
+}

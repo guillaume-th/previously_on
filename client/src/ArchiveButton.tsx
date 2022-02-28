@@ -2,11 +2,11 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 import UnarchiveIcon from '@mui/icons-material/Unarchive';
 import { useAppSelector } from '../hooks';
 import { useState } from 'react';
-import { ArchiveProps } from '../interfaces';
+import { ButtonProps } from '../interfaces';
 
-export default function ArchiveButton({ id, isArchived }: ArchiveProps) {
+export default function ArchiveButton({ id, isActive }: ButtonProps) {
     const access_token = useAppSelector<string | null>(state => state.user.accessToken);
-    const [archived, setArchived] = useState<boolean>(isArchived);
+    const [archived, setArchived] = useState<boolean>(isActive);
     const client_id = process.env.NEXT_PUBLIC_API_KEY;
 
     const handleArchive = () => {
@@ -22,6 +22,6 @@ export default function ArchiveButton({ id, isArchived }: ArchiveProps) {
     };
 
     return archived
-        ? <div className="horizontal center"><ArchiveIcon onClick={handleArchive} className="button" sx={{marginRight : "1rem"}} /> <span>Série archivée</span></div>
-        : <div className="horizontal center"><UnarchiveIcon onClick={handleArchive} className="button" sx={{marginRight : "1rem"}} /> <span>Archiver la série</span></div>
+        ? <div className="horizontal center validated"><ArchiveIcon onClick={handleArchive} className="button" sx={{marginRight : "1rem"}} /> <span>Série archivée</span></div>
+        : <div className="horizontal center unvalidated"><UnarchiveIcon onClick={handleArchive} className="button" sx={{marginRight : "1rem"}} /> <span>Archiver la série</span></div>
 }

@@ -1,5 +1,4 @@
 import { CircularProgress } from "@mui/material";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Header from "../Header";
 import { showData, Episode } from "../../interfaces";
@@ -8,7 +7,8 @@ import { getQueryParameter } from "../../utils";
 import Dropper from "./Dropper";
 import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import { useAppSelector } from "../../hooks";
-import ArchiveButton  from "../../src/ArchiveButton";
+import ArchiveButton from "../../src/ArchiveButton";
+import FavoriteButton from "../../src/FavoriteButton";
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
 export default function SeriesListing() {
@@ -113,8 +113,12 @@ export default function SeriesListing() {
                                             <span className="lgt-blue">{v} </span>
                                         )}
                                         <p>{`${data.seasons} saison${data.seasons > 1 ? "s" : ""}`} </p>
-                                        <p style={{ marginBottom: "2rem" }}>{`${data.episodes} épisode${data.episodes > 1 ? "s" : ""}`} </p>
-                                        <ArchiveButton id={data.id} isArchived={data.user.archived}></ArchiveButton>
+                                        <p>{`${data.episodes} épisode${data.episodes > 1 ? "s" : ""}`} </p>
+                                        <p style={{ marginBottom: "2rem" }}>{`Durée moyenne : ${data.length} min`} </p>
+                                        <div className="horizontal center" style={{gap : "1rem", marginBottom : "1rem"}}>
+                                            <FavoriteButton id={data.id} isActive={data.user.archived}></FavoriteButton>
+                                            <ArchiveButton id={data.id} isActive={data.user.archived}></ArchiveButton>
+                                        </div>
                                     </div>
                                 </div>
                                 <p>{data.description}</p>

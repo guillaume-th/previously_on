@@ -15,6 +15,7 @@ export interface showData {
     platforms: {
         svods: svod[]
     },
+    length : number,
     user: UserData,
 }
 
@@ -31,9 +32,9 @@ interface UserData {
     }
 }
 
-export interface ArchiveProps {
+export interface ButtonProps {
     id: number, 
-    isArchived : boolean,
+    isActive : boolean,
 }
 
 interface svod {
