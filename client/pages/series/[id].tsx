@@ -8,6 +8,7 @@ import { getQueryParameter } from "../../utils";
 import Dropper from "./Dropper";
 import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import { useAppSelector } from "../../hooks";
+import ArchiveButton  from "../../src/ArchiveButton";
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
 export default function SeriesListing() {
@@ -113,6 +114,7 @@ export default function SeriesListing() {
                                         )}
                                         <p>{`${data.seasons} saison${data.seasons > 1 ? "s" : ""}`} </p>
                                         <p style={{ marginBottom: "2rem" }}>{`${data.episodes} épisode${data.episodes > 1 ? "s" : ""}`} </p>
+                                        <ArchiveButton id={data.id} isArchived={data.user.archived}></ArchiveButton>
                                     </div>
                                 </div>
                                 <p>{data.description}</p>
