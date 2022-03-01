@@ -106,11 +106,13 @@ export default function Profile() {
     // }
 
     const getRequests = () => {
-        fetch(` https://api.betaseries.com/friends/requests?client_id=${API_KEY}&access_token=${myToken}&received=true`)
+        const token: string | null = myToken ? myToken : localStorage.getItem("token");
+        // fetch(`https://api.betaseries.com/friends/requests?client_id=${API_KEY}&access_token=${token}&received`)
+        fetch(`https://api.betaseries.com/members/notifications?client_id=${API_KEY}&token=${token}&type=friend`)
             .then(res => res.json())
             .then(res => {
-                console.log(res);
-                setRequests(res.users);
+                console.log(res, token);
+                setRequests(res.notifications);
             })
             .catch(err => console.log(err));
     }
@@ -135,7 +137,7 @@ export default function Profile() {
 
                         ? <div>
                             {friends.friends.map(v =>
-                                <div className="horizontal center">
+                                <div className="horizontal">
                                     {v.login}
                                     <PersonRemoveIcon className="button" onClick={() => handleFriend(v.id, true)} />
                                     <BlockIcon className="button" onClick={() => handleBlock(v.id, false)} />
@@ -163,22 +165,23 @@ export default function Profile() {
                             <div className="suggestions">
                                 {userSuggestions.length > 0 &&
                                     userSuggestions.map(v =>
-                                        <div className="suggestion horizontal center">
+                                        <div className="suggestion horizontal">
                                             <span style={{ marginRight: "1rem" }}>{v.login}</span>
                                             <PersonAddIcon onClick={() => handleFriend(v.id, false)} />
                                         </div>
                                     )}
                             </div>
-                            {requests?.length 
+                            {requests?.length
                                 ? <div >
-                                    <h2>Demandes reçues :   </h2>
+                                    <h2>Demandes reçues : </h2>
                                     {requests.map(v =>
                                         <div key={v.id + "request"}>
-                                            {v.login}
+                                            <span style={{ marginRight: "1rem" }}>{v.text}</span>
+                                            <PersonAddIcon onClick={() => handleFriend(v.ref_id, false)} />
                                         </div>
                                     )}
                                 </div>
-                                :<p>Vous n'avez pas de notifications</p>
+                                : <p>Vous n'avez pas de notifications</p>
                             }
                         </div>
                     }

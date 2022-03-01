@@ -143,7 +143,7 @@ export default function SeriesListing() {
                                                 : <RemoveIcon onClick={addToAccount} className="button unvalidated" />
                                             }
                                             {added &&
-                                                <div className="horizontal" style={{ gap: "1rem", marginBottom: "1rem" }} >
+                                                <div className="horizontal" style={{ gap: "1rem", marginBottom: "1rem" }}    >
                                                     <FavoriteButton id={data.id} isActive={data.user.favorited} ></FavoriteButton>
                                                     <ArchiveButton id={data.id} isActive={data.user.archived}></ArchiveButton>
                                                 </div>
