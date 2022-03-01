@@ -9,6 +9,7 @@ import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import { useAppSelector } from "../../hooks";
 import ArchiveButton from "../../src/ArchiveButton";
 import FavoriteButton from "../../src/FavoriteButton";
+import AddButton from "../../src/AddButton";
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
 export default function SeriesListing() {
@@ -26,7 +27,7 @@ export default function SeriesListing() {
                 console.log(res);
                 if (res.show) {
                     setData(res.show)
-                    console.log(res.show.images.show)
+                    console.log(res.show)
                 }
             })
             .catch(err => console.log(err));
@@ -91,6 +92,11 @@ export default function SeriesListing() {
         });
     }
 
+    const isInAccount = () => {
+        return (data?.user.remaining > 0 && data?.user.status !== 0) || (data?.user.remaining === 0 && data?.user.status === 100);
+    }
+
+
     return (
         <div>
             <Header />
@@ -113,7 +119,8 @@ export default function SeriesListing() {
                                         <p>{`${data.seasons} saison${data.seasons > 1 ? "s" : ""}`} </p>
                                         <p>{`${data.episodes} épisode${data.episodes > 1 ? "s" : ""}`} </p>
                                         <p style={{ marginBottom: "2rem" }}>{`Durée moyenne : ${data.length} min`} </p>
-                                        <div className="horizontal center" style={{ gap: "1rem", marginBottom: "1rem" }}>
+                                        <AddButton id={data.id} isActive={isInAccount()} />
+                                        <div className="horizontal" style={{ gap: "1rem", marginBottom: "1rem" }}>
                                             <FavoriteButton id={data.id} isActive={data.user.favorited}></FavoriteButton>
                                             <ArchiveButton id={data.id} isActive={data.user.archived}></ArchiveButton>
                                         </div>
