@@ -8,7 +8,7 @@ export default function ArchiveButton({ id, isActive }: ButtonProps) {
     const access_token = useAppSelector<string | null>(state => state.user.accessToken);
     const [favorite, setFavorite] = useState<boolean>(isActive);
     const client_id = process.env.NEXT_PUBLIC_API_KEY;
-
+    console.log("fav", favorite); 
     const handleFavorite = () => {
         fetch(`https://api.betaseries.com/shows/favorite?client_id=${client_id}&id=${id}&access_token=${access_token}`,
             {

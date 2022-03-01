@@ -72,6 +72,9 @@ export interface User {
         shows: number,
         episodes_to_watch: number,
         xp: 0,
+        time_on_tv: number, 
+        time_to_spend:number,
+        favorite_genre : string, 
     }
     avatar: string | null,
     id: number,

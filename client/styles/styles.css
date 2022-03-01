@@ -13,7 +13,20 @@
 
 body {
     max-width: 100vw !important;
+    color : white; 
 }
+
+input, textarea{
+    background-color: transparent;
+    border : 2px solid var(--clr-primary-med);
+    color : white;
+    border-radius: .375rem;
+    outline : none; 
+    padding : .5rem; 
+    min-width: 250px;
+
+}
+
 
 .sp-b {
     justify-content: space-between;
@@ -243,4 +256,22 @@ nav>*:hover {
 
 .unvalidated {
     color: var(--clr-primary-med)
+}
+
+.suggestions{
+    padding-left: 1rem;
+}
+
+.suggestion{
+    transition : all .25s ease; 
+    cursor: pointer;
+    margin : .25rem;
+}
+
+.suggestion:hover{
+    color : var(--clr-primary-light)
+}
+
+.grey{
+    color : grey;
 }

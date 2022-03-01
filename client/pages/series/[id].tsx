@@ -15,11 +15,12 @@ export default function SeriesListing() {
     const [data, setData] = useState<showData>();
     const [episodes, setEpisodes] = useState<Episode[][]>([])
     const [openDroppers, setOpenDroppers] = useState<number[]>([]);
-    const token = useAppSelector(state => state.user.accessToken)
+    const token = useAppSelector(state => state.user.accessToken) 
 
     useEffect(() => {
         const id = getQueryParameter(window.location.pathname);
-        fetch(`https://api.betaseries.com/shows/display?id=${id}&client_id=${API_KEY}&token=${token}`)
+        const realToken = token ? token : localStorage.getItem("token");
+        fetch(`https://api.betaseries.com/shows/display?id=${id}&client_id=${API_KEY}&access_token=${realToken}`)
             .then(res => res.json())
             .then(res => {
                 console.log(res);
@@ -34,7 +35,7 @@ export default function SeriesListing() {
     }, []);
 
     const getEpisodes = (id: string) => {
-        fetch(`https://api.betaseries.com/shows/episodes?id=${id}&client_id=${API_KEY}&token=${token}`)
+        fetch(`https://api.betaseries.com/shows/episodes?id=${id}&client_id=${API_KEY}&access_token=${token}`)
             .then(res => res.json())
             .then(res => {
 
@@ -44,8 +45,6 @@ export default function SeriesListing() {
             })
             .catch(err => console.log(err));
     }
-
-
 
     function formatEpisodes(episodes: Episode[]): Episode[][] {
         const data = [];
@@ -88,7 +87,6 @@ export default function SeriesListing() {
 
         Promise.all(fetches).then(() => {
             const data = formatEpisodes(episodes);
-            console.log(data);
             setEpisodes(data);
         });
     }
@@ -116,7 +114,7 @@ export default function SeriesListing() {
                                         <p>{`${data.episodes} épisode${data.episodes > 1 ? "s" : ""}`} </p>
                                         <p style={{ marginBottom: "2rem" }}>{`Durée moyenne : ${data.length} min`} </p>
                                         <div className="horizontal center" style={{gap : "1rem", marginBottom : "1rem"}}>
-                                            <FavoriteButton id={data.id} isActive={data.user.archived}></FavoriteButton>
+                                            <FavoriteButton id={data.id} isActive={data.user.favorited}></FavoriteButton>
                                             <ArchiveButton id={data.id} isActive={data.user.archived}></ArchiveButton>
                                         </div>
                                     </div>

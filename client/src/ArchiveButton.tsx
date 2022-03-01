@@ -22,6 +22,6 @@ export default function ArchiveButton({ id, isActive }: ButtonProps) {
     };
 
     return archived
-        ? <div className="horizontal center validated"><ArchiveIcon onClick={handleArchive} className="button" sx={{marginRight : "1rem"}} /> <span>Série archivée</span></div>
-        : <div className="horizontal center unvalidated"><UnarchiveIcon onClick={handleArchive} className="button" sx={{marginRight : "1rem"}} /> <span>Archiver la série</span></div>
+        ? <div className="horizontal center validated"><ArchiveIcon onClick={handleArchive} className="button" sx={{ marginRight: "1rem" }} /> <span>Série archivée</span></div>
+        : <div className="horizontal center unvalidated"><UnarchiveIcon onClick={handleArchive} className="button" sx={{ marginRight: "1rem" }} /> <span>Archiver la série</span></div>
 }

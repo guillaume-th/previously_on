@@ -13,7 +13,7 @@ export default function Header() {
             <nav>
                 <Link href="/series/listing">Series</Link>
                 {userData
-                ? <Link href="/profile">{userData.login}</Link>
+                ? <Link href={`/profile/${token}`}>{userData.login}</Link>
                 : <Connexion/>
             }
             </nav>
