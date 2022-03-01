@@ -229,11 +229,6 @@ export default function SeriesListing() {
                                     </div>
                                 </form>
                             </div>
-
-                            <form onSubmit={sendComment}>
-                                <textarea name='commentaire'></textarea>
-                                <input type="submit" value="send" />
-                            </form>
                         </div>
                     </div>
                 </div>
