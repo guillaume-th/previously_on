@@ -144,9 +144,9 @@ export default function SeriesListing() {
     const sendComment = (e: React.FormEvent) => {
         e.preventDefault();
         const token = localStorage.getItem("token")
-        const value = (e.target as HTMLInputElement).value;
+        const value = ((e.target as HTMLCollection)[0] as HTMLTextAreaElement).value;
         if (value !== "" && value !== null) {
-            fetch(`https://api.betaseries.com/comments/comment?client_id=${API_KEY}&access_token=${token}&type=episode&id=${episodeId}&text=${value}`)
+            fetch(`https://api.betaseries.com/comments/comment?client_id=${API_KEY}&access_token=${token}&type=episode&id=${episodeId}&text=${value}`,{method:"POST"})
                 .then(res => res.json())
                 .then(res => {
                     console.log(res);
