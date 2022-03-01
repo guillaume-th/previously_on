@@ -8,9 +8,10 @@ import { useAppSelector } from "../../../hooks";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import PlaylistAddCheckCircleIcon from '@mui/icons-material/PlaylistAddCheckCircle';
+import { Comment } from "../../../interfaces";
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
-const defaultEpisode:Episode = {
+const defaultEpisode: Episode = {
     title: "",
     season: 0,
     id: 0,
@@ -32,7 +33,7 @@ export default function SeriesListing() {
     const [image, setImage] = useState("");
     const [background, setBackGround] = useState<string>("");
     const [episodeId, setEpisodeId] = useState<string>("");
-    const [comments, setComments] = useState(null);
+    const [comments, setComments] = useState<Comment[]|null>(null);
     const token = useAppSelector(state => state.user.accessToken)
 
     useEffect(() => {
@@ -114,25 +115,25 @@ export default function SeriesListing() {
     const getComment = (id: string) => {
         const token = localStorage.getItem("token")
         fetch(`https://api.betaseries.com/comments/comments?id=${id}&type=episode&client_id=${API_KEY}&access_token=${token}&nbpp=10`)
-        .then(res => res.json())
-        .then(res => {
-            console.log(res);
-            setComments(res.comments);
-        })
-        .catch(err => console.log(err));
-        }
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                setComments(res.comments);
+            })
+            .catch(err => console.log(err));
+    }
     const sendComment = (e) => {
         e.preventDefault();
         const token = localStorage.getItem("token")
         console.log(e.target[0].value)
-        if(e.target[0].value!==""&& e.target[0].value!==null){
-        fetch(`https://api.betaseries.com/comments/comment?client_id=${API_KEY}&access_token=${token}&type=episode&id=${episodeId}&text=${e.target[0].value}`)
-        .then(res => res.json())
-        .then(res => {
-            console.log(res);
-        })
-        .catch(err => console.log(err));
-        }else{
+        if (e.target[0].value !== "" && e.target[0].value !== null) {
+            fetch(`https://api.betaseries.com/comments/comment?client_id=${API_KEY}&access_token=${token}&type=episode&id=${episodeId}&text=${e.target[0].value}`)
+                .then(res => res.json())
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => console.log(err));
+        } else {
             console.log("message vide")
         }
 
@@ -169,21 +170,23 @@ export default function SeriesListing() {
                             <p>episodes n°{data.episode}</p>
                             <p> Resumé : {data.description}</p>
                             <Buttons />
-                            {comments?.map((comment)=>
-                            <div>
-                            <img src={comment.avatar} alt="" />
-                            <p>{comment.login}</p>
-                            <div className=" center horizontal">
-                                <StarOutlineIcon className="block" style={{ marginRight: ".5rem" }} />
-                                <span className="block">{comment.user_note}</span>
+                            <div className="comments-wrapper">
+                                {comments?.map((comment:Comment) =>
+                                    <div>
+                                        <img src={comment.avatar} alt="" />
+                                        <p>{comment.login}</p>
+                                        <div className=" center horizontal">
+                                            <StarOutlineIcon className="block" style={{ marginRight: ".5rem" }} />
+                                            <span className="block">{comment.user_note}</span>
+                                        </div>
+                                        <p>{comment.date}</p>
+                                        <p>{comment.text}</p>
+                                    </div>
+                                )}
                             </div>
-                            <p>{comment.date}</p>
-                            <p>{comment.text}</p>
-                            </div>
-                            )}
                             <form onSubmit={sendComment}>
-                            <textarea  name='commentaire'></textarea>
-                            <input type="submit" value="send"/>
+                                <textarea name='commentaire'></textarea>
+                                <input type="submit" value="send" />
                             </form>
                         </div>
                     </div>

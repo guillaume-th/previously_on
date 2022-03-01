@@ -79,3 +79,10 @@ export interface User {
     avatar: string | null,
     id: number,
 }
+
+export interface Comment{
+    avatar : string, 
+    login: string, 
+    text : string, 
+    date :string,
+}
