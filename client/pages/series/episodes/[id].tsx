@@ -9,6 +9,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import PlaylistAddCheckCircleIcon from '@mui/icons-material/PlaylistAddCheckCircle';
 import { Comment } from "../../../interfaces";
+import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
+
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
 const defaultEpisode: Episode = {
@@ -33,7 +35,8 @@ export default function SeriesListing() {
     const [image, setImage] = useState("");
     const [background, setBackGround] = useState<string>("");
     const [episodeId, setEpisodeId] = useState<string>("");
-    const [comments, setComments] = useState<Comment[]|null>(null);
+    const [comments, setComments] = useState<Comment[] | null>(null);
+    const [openComments, setOpenComments] = useState(false);
     const token = useAppSelector(state => state.user.accessToken)
 
     useEffect(() => {
@@ -122,12 +125,12 @@ export default function SeriesListing() {
             })
             .catch(err => console.log(err));
     }
-    const sendComment = (e) => {
+    const sendComment = (e: React.FormEvent) => {
         e.preventDefault();
         const token = localStorage.getItem("token")
-        console.log(e.target[0].value)
-        if (e.target[0].value !== "" && e.target[0].value !== null) {
-            fetch(`https://api.betaseries.com/comments/comment?client_id=${API_KEY}&access_token=${token}&type=episode&id=${episodeId}&text=${e.target[0].value}`)
+        const value = (e.target as HTMLInputElement).value;
+        if (value !== "" && value !== null) {
+            fetch(`https://api.betaseries.com/comments/comment?client_id=${API_KEY}&access_token=${token}&type=episode&id=${episodeId}&text=${value}`)
                 .then(res => res.json())
                 .then(res => {
                     console.log(res);
@@ -170,24 +173,44 @@ export default function SeriesListing() {
                             <p>episodes n°{data.episode}</p>
                             <p> Resumé : {data.description}</p>
                             <Buttons />
-                            <div className="comments-wrapper">
-                                {comments?.map((comment:Comment) =>
-                                    <div>
-                                        <img src={comment.avatar} alt="" />
-                                        <p>{comment.login}</p>
-                                        <div className=" center horizontal">
-                                            <StarOutlineIcon className="block" style={{ marginRight: ".5rem" }} />
-                                            <span className="block">{comment.user_note}</span>
-                                        </div>
-                                        <p>{comment.date}</p>
-                                        <p>{comment.text}</p>
-                                    </div>
-                                )}
+                            <div onClick={() => setOpenComments(!openComments)} className="horizontal sp-b" style={{ cursor: "pointer" }}>
+                                <p className="mid-title lgt-blue">Comments </p>
+                                <ArrowDropDownCircleIcon sx={{ color: "#BFD7ED", fontSize: "2rem", cursor: "pointer" }} />
                             </div>
-                            <form onSubmit={sendComment}>
-                                <textarea name='commentaire'></textarea>
-                                <input type="submit" value="send" />
-                            </form>
+                            <hr></hr>
+                            {openComments &&
+                                <div className="comments-wrapper">
+                                    {comments?.map((comment: Comment) =>
+                                        <div className="comment horizontal">
+                                            <div className="comment-img">
+                                                <img src={comment.avatar} alt="" />
+                                            </div>
+                                            <div className="comment-content">
+                                                <p className="username-comment">{comment.login}</p>
+                                                {comment.user_note &&
+                                                    <div className=" center horizontal">
+                                                        <StarOutlineIcon className="block" style={{ marginRight: ".5rem" }} />
+                                                        <span className="block">{comment.user_note}</span>
+                                                    </div>
+                                                }
+                                                <p>{comment.date}</p>
+                                                <p>{comment.text}</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            }
+                            <div className="horizontal center">
+                                <p className="mid-title lgt-blue">Poster un commentaire</p>
+                            </div>
+                            <div className="comment-form-wrapper">
+                                <form onSubmit={sendComment} className="comment-form">
+                                    <textarea name='commentaire'></textarea>
+                                    <div className=" horizontal center">
+                                        <input type="submit" value="Envoyer" />
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

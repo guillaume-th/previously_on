@@ -79,6 +79,11 @@ nav>*:hover {
     padding : 1rem;
 }
 
+.center{
+    justify-content: center;
+    align-items: center;
+}
+
 /* .wrapper{
     display : flex; 
     justify-content: center;
@@ -274,4 +279,57 @@ nav>*:hover {
 
 .grey{
     color : grey;
+}
+
+.comment{
+    width : 100%; 
+    border : 1px solid var(--clr-primary-light); 
+    padding : 1rem; 
+    margin-bottom: 2rem;
+}
+
+.comment-content {
+    padding-left : 1rem; 
+}
+
+.username-comment{
+    font-size: var(--fs-med);
+    color : var(--clr-primary-med); 
+    font-weight: bold;
+    margin-bottom: .5rem;
+}
+
+.comment-img{
+    /* flex : 0 0 20%; */
+    flex-basis: 20%;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+.comment-img img{
+    width : 100%;
+}
+
+.comment-form-wrapper{
+    width : 100%; 
+    display : flex; 
+    justify-content: center;
+    align-items: center;
+}
+
+.comment-form > *{
+    margin-bottom : 1rem; 
+}
+
+.comment-form textarea{
+    max-width: 600px;
+    min-width: 350px;
+    min-height: 300px;
+}
+
+.comment-form input{
+    background-color: #0074B7;
+    color : white;
+    display : block;
+    /* font-size: var(--fs-med); */
 }

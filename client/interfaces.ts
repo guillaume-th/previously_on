@@ -85,4 +85,5 @@ export interface Comment{
     login: string, 
     text : string, 
     date :string,
+    user_note:number,
 }
