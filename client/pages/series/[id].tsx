@@ -15,7 +15,7 @@ export default function SeriesListing() {
     const [data, setData] = useState<showData>();
     const [episodes, setEpisodes] = useState<Episode[][]>([])
     const [openDroppers, setOpenDroppers] = useState<number[]>([]);
-    const token = useAppSelector(state => state.user.accessToken) 
+    const token = useAppSelector(state => state.user.accessToken)
 
     useEffect(() => {
         const id = getQueryParameter(window.location.pathname);
@@ -103,7 +103,7 @@ export default function SeriesListing() {
                                 <div className="display-top">
                                     <div>
                                         <h1>{data.title}</h1>
-                                        <div className=" center horizontal">
+                                        <div className=" horizontal">
                                             <StarOutlineIcon className="block" style={{ marginRight: ".5rem" }} />
                                             <span className="block">{data.notes.mean.toFixed(2)}</span>
                                         </div>
@@ -113,7 +113,7 @@ export default function SeriesListing() {
                                         <p>{`${data.seasons} saison${data.seasons > 1 ? "s" : ""}`} </p>
                                         <p>{`${data.episodes} épisode${data.episodes > 1 ? "s" : ""}`} </p>
                                         <p style={{ marginBottom: "2rem" }}>{`Durée moyenne : ${data.length} min`} </p>
-                                        <div className="horizontal center" style={{gap : "1rem", marginBottom : "1rem"}}>
+                                        <div className="horizontal center" style={{ gap: "1rem", marginBottom: "1rem" }}>
                                             <FavoriteButton id={data.id} isActive={data.user.favorited}></FavoriteButton>
                                             <ArchiveButton id={data.id} isActive={data.user.archived}></ArchiveButton>
                                         </div>
@@ -121,24 +121,24 @@ export default function SeriesListing() {
                                 </div>
                                 <p>{data.description}</p>
                                 <div>
-                                {data.platforms &&
-                                    <p className="mid-title">Où regarder : </p>
-                                }
-                                    <div className="vod-container">
                                     {data.platforms &&
-                                        data.platforms.svods.map((v, i) =>
-                                            <div key={`svod${i}`}>
-                                                <a href={v.link_url} target="_blank">
-                                                    <img src={v.logo} className="vod-logo" />
-                                                </a>
-                                            </div>
-                                        )
+                                        <p className="mid-title">Où regarder : </p>
+                                    }
+                                    <div className="vod-container">
+                                        {data.platforms &&
+                                            data.platforms.svods.map((v, i) =>
+                                                <div key={`svod${i}`}>
+                                                    <a href={v.link_url} target="_blank">
+                                                        <img src={v.logo} className="vod-logo" />
+                                                    </a>
+                                                </div>
+                                            )
                                         }
                                     </div>
                                 </div>
                                 <div className="episode-list-container">
                                     {data.user &&
-                                        data.user.remaining!==0 &&
+                                        data.user.remaining !== 0 &&
                                         <div>
                                             <p>Il vous reste <strong>{data.user.remaining}</strong> épisode(s) à voir.</p>
                                             <p className="title-mid">Prochain épisode : </p>

@@ -83,6 +83,11 @@ export default function SeriesListing() {
             method: "POST",
         })
             .then(res => {
+                if (res.status === 200) {
+                    const newData: Episode = { ...data };
+                    newData.user.seen = true;
+                    setData(newData);
+                }
             })
             .catch(err => console.log(err));
     }
@@ -163,7 +168,7 @@ export default function SeriesListing() {
                         <div className="series-display" >
                             <h1>{data.title}</h1>
                             <p>{data.code}</p>
-                            <div className=" center horizontal">
+                            <div className=" horizontal">
                                 <StarOutlineIcon className="block" style={{ marginRight: ".5rem" }} />
                                 <span className="block">{data.note.mean.toFixed(1)}</span>
                             </div>
@@ -188,7 +193,7 @@ export default function SeriesListing() {
                                             <div className="comment-content">
                                                 <p className="username-comment">{comment.login}</p>
                                                 {comment.user_note &&
-                                                    <div className=" center horizontal">
+                                                    <div className=" horizontal">
                                                         <StarOutlineIcon className="block" style={{ marginRight: ".5rem" }} />
                                                         <span className="block">{comment.user_note}</span>
                                                     </div>
