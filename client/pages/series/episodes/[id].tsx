@@ -1,7 +1,7 @@
-import { CircularProgress } from "@mui/material";
+import { Backdrop, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import Header from "../../../src/Header";
-import { Episode } from "../../../interfaces";
+import { CommentsFetchParams, Episode } from "../../../interfaces";
 import { getQueryParameter } from "../../../utils";
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { useAppSelector } from "../../../hooks";
@@ -31,6 +31,7 @@ const defaultEpisode: Episode = {
 export default function SeriesListing() {
     const [data, setData] = useState<Episode>(defaultEpisode);
     const [image, setImage] = useState("");
+    const [LastCommentId, setLastCommentId] = useState("");
     const [background, setBackGround] = useState<string>("");
     const [episodeId, setEpisodeId] = useState<string>("");
     const [comments, setComments] = useState<Comment[]|null>(null);
@@ -47,7 +48,7 @@ export default function SeriesListing() {
                 if (res.episode) {
                     setData(res.episode as Episode)
                     getBackground(res.episode.show.id);
-                    getComment(id);
+                    getComment({episodeId : id});
                 }
             })
             .catch(err => console.log(err));
@@ -112,15 +113,25 @@ export default function SeriesListing() {
             .catch(err => console.log(err));
     }
 
-    const getComment = (id: string) => {
+    const getComment = ({episodeId, lastId} : CommentsFetchParams ) => {
         const token = localStorage.getItem("token")
-        fetch(`https://api.betaseries.com/comments/comments?id=${id}&type=episode&client_id=${API_KEY}&access_token=${token}&nbpp=10`)
+        const option_since_id= lastId ? "&since_id="+lastId : "";
+        console.log(episodeId, lastId); 
+        fetch(`https://api.betaseries.com/comments/comments?id=${episodeId}&type=episode&client_id=${API_KEY}&access_token=${token}&nbpp=10&order=desc${option_since_id}`)
             .then(res => res.json())
             .then(res => {
                 console.log(res);
                 setComments(res.comments);
+                setLastCommentId(res.comments[9].id);
             })
             .catch(err => console.log(err));
+    }
+    const NextComment = () => {
+        getComment({episodeId, lastId : LastCommentId});
+    }
+    const BackComment = () => {
+        // setSinceid(null);
+        getComment({episodeId});
     }
     const sendComment = (e) => {
         e.preventDefault();
@@ -184,6 +195,8 @@ export default function SeriesListing() {
                                     </div>
                                 )}
                             </div>
+                            <button onClick={BackComment}>Back</button>
+                            <button onClick={NextComment}>Next</button>
                             <form onSubmit={sendComment}>
                                 <textarea name='commentaire'></textarea>
                                 <input type="submit" value="send" />

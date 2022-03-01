@@ -86,3 +86,8 @@ export interface Comment{
     text : string, 
     date :string,
 }
+
+export interface CommentsFetchParams{
+    episodeId : string, 
+    lastId?: string, 
+}
