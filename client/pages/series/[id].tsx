@@ -9,7 +9,8 @@ import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import { useAppSelector } from "../../hooks";
 import ArchiveButton from "../../src/ArchiveButton";
 import FavoriteButton from "../../src/FavoriteButton";
-import AddButton from "../../src/AddButton";
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
 export default function SeriesListing() {
@@ -17,6 +18,7 @@ export default function SeriesListing() {
     const [episodes, setEpisodes] = useState<Episode[][]>([])
     const [openDroppers, setOpenDroppers] = useState<number[]>([]);
     const token = useAppSelector(state => state.user.accessToken)
+    const [added, setAdded] = useState<boolean>(false);
 
     useEffect(() => {
         const id = getQueryParameter(window.location.pathname);
@@ -27,7 +29,9 @@ export default function SeriesListing() {
                 console.log(res);
                 if (res.show) {
                     setData(res.show)
+                    setAdded(isInAccount(res.show));
                     console.log(res.show)
+
                 }
             })
             .catch(err => console.log(err));
@@ -85,16 +89,30 @@ export default function SeriesListing() {
                 })
                 .catch(err => console.log(err)));
         }
-
         Promise.all(fetches).then(() => {
             const data = formatEpisodes(episodes);
             setEpisodes(data);
         });
     }
 
-    const isInAccount = () => {
-        return (data?.user.remaining > 0 && data?.user.status !== 0) || (data?.user.remaining === 0 && data?.user.status === 100);
+    const isInAccount = (data: showData) => {
+        return data?.user.remaining > 0 || (data?.user.remaining === 0 && data?.user.status === 100);
     }
+
+    const addToAccount = () => {
+        fetch(`https://api.betaseries.com/shows/show?client_id=${API_KEY}&id=${data.id}&access_token=${token}`,
+            {
+                method: added ? "DELETE" : "POST",
+            }).then(res => res.json())
+            .then(res => {
+                console.log(res);
+                if (res.show) {
+                    setAdded(!added);
+                }
+            })
+            .catch(err => console.log(err));
+    };
+
 
 
     return (
@@ -119,10 +137,17 @@ export default function SeriesListing() {
                                         <p>{`${data.seasons} saison${data.seasons > 1 ? "s" : ""}`} </p>
                                         <p>{`${data.episodes} épisode${data.episodes > 1 ? "s" : ""}`} </p>
                                         <p style={{ marginBottom: "2rem" }}>{`Durée moyenne : ${data.length} min`} </p>
-                                        <AddButton id={data.id} isActive={isInAccount()} />
                                         <div className="horizontal" style={{ gap: "1rem", marginBottom: "1rem" }}>
-                                            <FavoriteButton id={data.id} isActive={data.user.favorited}></FavoriteButton>
-                                            <ArchiveButton id={data.id} isActive={data.user.archived}></ArchiveButton>
+                                            {!added
+                                                ? <AddIcon onClick={addToAccount} className="button validated" />
+                                                : <RemoveIcon onClick={addToAccount} className="button unvalidated" />
+                                            }
+                                            {added &&
+                                                <div className="horizontal" style={{ gap: "1rem", marginBottom: "1rem" }} >
+                                                    <FavoriteButton id={data.id} isActive={data.user.favorited} ></FavoriteButton>
+                                                    <ArchiveButton id={data.id} isActive={data.user.archived}></ArchiveButton>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>
