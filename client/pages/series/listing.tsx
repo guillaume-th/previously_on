@@ -9,6 +9,7 @@ const API_KEY: string | undefined = process.env.NEXT_PUBLIC_API_KEY;
 
 export default function SeriesListing() {
     const [data, setData] = useState<showData[]>([]);
+    const [start, setstart] = useState(0);
 
     useEffect(() => {
         getData();
@@ -22,8 +23,8 @@ export default function SeriesListing() {
         (e.target as Element).classList.remove("fadeIn");
     };
 
-    const getData = () => {
-        fetch(`https://api.betaseries.com/shows/list?order=popularity&client_id=${API_KEY}`)
+    const getData = (start:number = 0) => {
+        fetch(`https://api.betaseries.com/shows/list?order=popularity&client_id=${API_KEY}&start=${start}&limit=60`)
             .then(res => res.json())
             .then(res => {
                 if (res.shows) {
@@ -31,6 +32,18 @@ export default function SeriesListing() {
                 }
             })
             .catch(err => console.log(err));
+    }
+    const NextPage = () => {
+        getData(start+100);
+        setstart(start+100);
+    }
+    const BackPage = () => {
+        if(start>0){
+            getData(start-100);
+        setstart(start-100)
+        }else{
+            console.log(start)
+        }
     }
     return (
         <div>
@@ -57,9 +70,13 @@ export default function SeriesListing() {
                                 </Link>
                             ))
                         }
+                        
                     </div>
                     : <CircularProgress />
                 }
+                {start!==0 &&
+                        <button onClick={BackPage}>Back</button>}
+                        <button onClick={NextPage}>Next</button>
             </div>
         </div >
     );
