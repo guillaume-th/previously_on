@@ -92,3 +92,9 @@ export interface CommentsFetchParams{
     episodeId : string, 
     lastId?: string, 
 }
+
+export interface ResultData{
+    title :string,
+    id:number, 
+    poster:string,
+}

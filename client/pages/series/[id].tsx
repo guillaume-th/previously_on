@@ -100,7 +100,7 @@ export default function SeriesListing() {
     }
 
     const addToAccount = () => {
-        fetch(`https://api.betaseries.com/shows/show?client_id=${API_KEY}&id=${data.id}&access_token=${token}`,
+        fetch(`https://api.betaseries.com/shows/show?client_id=${API_KEY}&id=${data?.id}&access_token=${token}`,
             {
                 method: added ? "DELETE" : "POST",
             }).then(res => res.json())
