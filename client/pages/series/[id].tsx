@@ -154,10 +154,12 @@ export default function SeriesListing() {
                                 <p>{data.description}</p>
                                 <div>
                                     {data.platforms &&
+                                            data.platforms.svods &&
                                         <p className="mid-title">Où regarder : </p>
                                     }
                                     <div className="vod-container">
                                         {data.platforms &&
+                                            data.platforms.svods &&
                                             data.platforms.svods.map((v, i) =>
                                                 <div key={`svod${i}`}>
                                                     <a href={v.link_url} target="_blank">
