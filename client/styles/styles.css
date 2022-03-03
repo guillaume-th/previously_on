@@ -333,3 +333,36 @@ nav>*:hover {
     display: block;
     /* font-size: var(--fs-med); */
 }
+
+.search-wrapper input{
+    width : 300px;
+}
+
+.searchSuggestions {
+    position: absolute;
+    left : -1rem;
+    z-index: 5;
+    background-color: black;
+    /* min-width: 20rem; */
+    border-bottom-left-radius: .5rem;
+    border-bottom-right-radius: .5rem;
+}
+
+.suggestion-search{
+    font-size: var(--fs-sm);
+    transition : all .25s ease;
+    padding : .15rem;
+    align-items: center;
+}
+
+.suggestion-search:hover{
+    background-color: var(--clr-primary-dark);
+}
+
+.search-wrapper{
+    position : relative;
+}
+
+.search-img{
+    width : 40px;
+}
